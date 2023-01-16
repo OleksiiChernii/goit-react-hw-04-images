@@ -19,7 +19,7 @@ export const App = () => {
       setIsLoading,
       setIsLoadMoreShowing,
     });
-  }, [query, page, images]);
+  }, [query, page]);
 
   const searchHandler = query => {
     const page = 1;
