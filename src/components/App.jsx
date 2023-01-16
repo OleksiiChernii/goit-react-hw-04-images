@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo} from 'react';
+import { useState, useEffect } from 'react';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Button } from './Button/Button';
@@ -12,23 +12,19 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadMoreShowing, setIsLoadMoreShowing] = useState(false);
 
-  const imagesMemo = useMemo(() => images, [images]);
-
   useEffect(() => {
     fetchHandler(query, page, {
-      imagesMemo,
+      images,
       setImages,
       setIsLoading,
       setIsLoadMoreShowing,
-    });
-  }, [query, page]);
+    }); // eslint-disable-next-line
+  }, [query, page]); 
 
   const searchHandler = query => {
-    const page = 1;
-    setImages([]);
     setIsLoading(true);
     setQuery(query);
-    setPage(page);
+    setPage(1);
     setIsLoadMoreShowing(false);
   };
 

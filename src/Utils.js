@@ -16,7 +16,7 @@ export function fetchHandler(query, page, app) {
       if (page === 1) {
         app.setImages(dataImages);
       } else {
-        app.setImages([...app.imagesMemo, ...dataImages]);
+        app.setImages([...app.images, ...dataImages]);
       }
     })
     .catch(console.log)
