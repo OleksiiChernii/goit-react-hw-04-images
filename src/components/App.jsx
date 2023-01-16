@@ -1,52 +1,47 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
 import { fetchHandler } from 'Utils';
 
-export class App extends React.Component {
-  state = {
-    query: '',
-    page: 1,
-    images: [],
-    isLoading: false,
-    isLoadMoreShowing: false,
-  };
+export const App = () => {
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadMoreShowing, setIsLoadMoreShowing] = useState(false);
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (
-      prevState.query !== this.state.query ||
-      prevState.page !== this.state.page
-    ) {
-      fetchHandler(this.state.query, this.state.page, this);
-    }
-  }
+  useEffect(() => {
+    fetchHandler(query, page, {
+      images,
+      setImages,
+      setIsLoading,
+      setIsLoadMoreShowing,
+    });
+  }, [query, page]);
 
-  searchHandler = query => {
+  const searchHandler = query => {
     const page = 1;
-    this.setState({ images: [], isLoadMoreShowing: false });
-    this.setState({ query, page });
-    this.setState({isLoading: true})
+    setImages([]);
+    setIsLoading(true);
+    setQuery(query);
+    setPage(page);
+    setIsLoadMoreShowing(false);
   };
 
-  buttonHandler = () => {
-    const page = this.state.page + 1;
-    this.setState({isLoadMoreShowing: false});
-    this.setState({isLoading: true})
-    this.setState({ page });
+  const buttonHandler = () => {
+    setIsLoadMoreShowing(false);
+    setIsLoading(true);
+    setPage(page + 1);
   };
 
-  render() {
-    return (
-      <>
-        <Searchbar onSubmit={this.searchHandler} />
-        <ImageGallery images={this.state.images} />
-        <Loader visible={this.state.isLoading} />
-        {this.state.isLoadMoreShowing && (
-          <Button buttonHandler={this.buttonHandler} />
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Searchbar onSubmit={searchHandler} />
+      <ImageGallery images={images} />
+      <Loader visible={isLoading} />
+      {isLoadMoreShowing && <Button buttonHandler={buttonHandler} />}
+    </>
+  );
+};

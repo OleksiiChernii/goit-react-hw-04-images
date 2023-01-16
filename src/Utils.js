@@ -14,15 +14,14 @@ export function fetchHandler(query, page, app) {
         return { id, webformatURL, tags };
       });
       if (page === 1) {
-        app.setState({
-          images: dataImages,
-        });
+        app.setImages(dataImages);
       } else {
-        app.setState({
-          images: [...app.state.images, ...dataImages],
-        });
+        app.setImages([...app.images, ...dataImages]);
       }
     })
-    .catch(e => console.log(e))
-    .finally(() => app.setState({ isLoading: false, isLoadMoreShowing: true }));
+    .catch(console.log)
+    .finally(() => {
+      app.setIsLoading(false);
+      app.setIsLoadMoreShowing(true);
+    });
 }
