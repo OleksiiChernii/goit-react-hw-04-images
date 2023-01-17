@@ -14,14 +14,14 @@ export const App = () => {
 
   useEffect(() => {
     fetchHandler(query, page, {
-      images,
       setImages,
       setIsLoading,
       setIsLoadMoreShowing,
-    }); // eslint-disable-next-line
+    });
   }, [query, page]); 
 
   const searchHandler = query => {
+    setImages([]);
     setIsLoading(true);
     setQuery(query);
     setPage(1);
